@@ -9,6 +9,7 @@ const App = () => {
     const [persons, setPersons] = useState([])
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
+    const [newPlace, setNewPlace] = useState('')
     const [filter, setFilter] = useState('')
     const [notification, setNotification] = useState({ message: null, type: null })
 
@@ -42,17 +43,18 @@ const App = () => {
                         setPersons(persons.map(p => p.id !== existingPerson.id ? p : returnedPerson))
                         setNewName('')
                         setNewNumber('')
-                        showNotification(`Updated ${returnedPerson.name}`, 'success')
+                        //showNotification(`Updated ${returnedPerson.name}`, 'success')
                     })
                     .catch(error => {
-                        showNotification(`Information of ${existingPerson.name} has already been removed from server`, 'error')
+                        //showNotification(`Information of ${existingPerson.name} has already been removed from server`, 'error')
                         setPersons(persons.filter(p => p.id !== existingPerson.id))
                     })
             }
         } else {
             const personObject = {
                 name: newName,
-                number: newNumber
+                number: newNumber,
+                place: newPlace
             }
 
             personService
@@ -61,10 +63,11 @@ const App = () => {
                     setPersons(persons.concat(returnedPerson))
                     setNewName('')
                     setNewNumber('')
+                    setNewPlace('')
                     //showNotification(`Added ${returnedPerson.name}`, 'success')
                 })
                 .catch(error => {
-                    showNotification(error.response.data.error, 'error')
+                    //showNotification(error.response.data.error, 'error')
                     console.log(error.response.data.error)
                 })
         }
@@ -77,10 +80,10 @@ const App = () => {
                 .remove(id)
                 .then(() => {
                     setPersons(persons.filter(p => p.id !== id))
-                    showNotification(`Deleted ${person.name}`, 'success')
+                    //showNotification(`Deleted ${person.name}`, 'success')
                 })
                 .catch(error => {
-                    showNotification(`Information of ${person.name} has already been removed from server`, 'error')
+                    //showNotification(`Information of ${person.name} has already been removed from server`, 'error')
                     setPersons(persons.filter(p => p.id !== id))
                 })
         }
@@ -92,6 +95,10 @@ const App = () => {
 
     const handleNumberChange = (event) => {
         setNewNumber(event.target.value)
+    }
+
+    const handlePlaceChange = (event) => {
+        setNewPlace(event.target.value)
     }
 
     const handleFilterChange = (event) => {
@@ -117,6 +124,8 @@ const App = () => {
                 handleNameChange={handleNameChange}
                 newNumber={newNumber}
                 handleNumberChange={handleNumberChange}
+                newPlace={newPlace}
+                handlePlaceChange={handlePlaceChange}
             />
 
             <h3>Numbers</h3>
